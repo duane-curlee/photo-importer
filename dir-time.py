@@ -6,13 +6,13 @@ It's useful for debugging photo-importer.py program.
 Sample output:
 $ python dir-time.py *.py
 === file: dir-time.py ===
+Last accessed: Fri Apr 12 13:49:33 2019
 When created:  Mon Apr  8 20:17:08 2019
 Last modified: Thu Apr 11 21:27:06 2019
-Last accessed: Fri Apr 12 13:49:33 2019
 === file: photo-import-cli.py ===
+Last accessed: Fri Apr 12 13:48:17 2019
 When created:  Mon Apr  8 11:17:31 2019
 Last modified: Fri Apr 12 13:48:15 2019
-Last accessed: Fri Apr 12 13:48:17 2019
 
 """
 
@@ -20,9 +20,9 @@ import time, sys, os, glob
 
 def show_times(the_file):
     print('=== file: ' + the_file + ' ===')
+    print("Last accessed: %s" % (time.ctime(os.path.getatime(the_file))))
     print("When created:  %s" % (time.ctime(os.path.getctime(the_file))))
     print("Last modified: %s" % (time.ctime(os.path.getmtime(the_file))))
-    print("Last accessed: %s" % (time.ctime(os.path.getatime(the_file))))
 
 if len(sys.argv) < 2:
     for filename in os.listdir(os.getcwd()):
