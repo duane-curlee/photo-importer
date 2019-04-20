@@ -11,19 +11,27 @@ root.geometry("800x600")
 root.minsize(800, 600)
 
 def import_them():
-    print("Importing. Naw, we're still testing.")
+    print("Importing... Naw, we're still testing.")
 
 def choose_source():
-    global lbl_source
-    folder_name =  filedialog.askdirectory(title = 'Select your source folder', initialdir=os.path.expanduser('~'))
-    if len(folder_name) > 0:
-        lbl_source.config(text=os.path.normpath(folder_name))
+    global lbl_source, photo_source
+    photo_source_orig = photo_source
+    photo_source =  filedialog.askdirectory(title = 'Select your source folder', initialdir=os.path.expanduser('~'))
+    if len(photo_source) > 0:
+        lbl_source.config(text=os.path.normpath(photo_source))
+    else:
+        photo_source = photo_source_orig
+        lbl_source.config(text=os.path.normpath(photo_source))
 
 def choose_target():
-    global lbl_target
-    folder_name =  filedialog.askdirectory(title = 'Select your target folder', initialdir=os.path.expanduser('~'))
-    if len(folder_name) > 0:
-        lbl_target.config(text=os.path.normpath(folder_name))
+    global lbl_target, photo_target
+    photo_target_orig = photo_target
+    photo_target =  filedialog.askdirectory(title = 'Select your target folder', initialdir=os.path.expanduser('~'))
+    if len(photo_target) > 0:
+        lbl_target.config(text=os.path.normpath(photo_target))
+    else:
+        photo_target = photo_target_orig
+        lbl_target.config(text=os.path.normpath(photo_target))
 
 frame_source = tk.Frame(root)
 frame_target = tk.Frame(root)

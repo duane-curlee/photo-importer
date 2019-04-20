@@ -13,6 +13,7 @@ def message(the_str):
     print(the_str)
 
 def import_these(the_folder):
+    global photo_home
     for root, dirs, files in os.walk(the_folder):
         message('Checking folder: ' + root + os.path.sep)
         for name in files:
