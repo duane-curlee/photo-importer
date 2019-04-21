@@ -3,13 +3,13 @@
 This utility copies photos from a given folder to your home archive.
 """
 import shutil, sys, os, datetime
-photo_home = os.path.expanduser('~') + os.path.sep + 'Photos-testing' + os.path.sep
+photo_home = os.path.join(os.path.expanduser('~'), 'Photos-testing')
 the_now = datetime.datetime.now()
 log_fname = 'log-' + the_now.strftime('%Y-%m-%d-%H-%M-%S') + '.txt'
 
 def message(the_str):
-    global log_file
-    log_file.write(the_str + '\n')
+    global log_file_node
+    log_file_node.write(the_str + '\n')
     print(the_str)
 
 def import_these(the_folder):
@@ -23,7 +23,7 @@ def import_these(the_folder):
                 the_path = the_dt.strftime('%Y') + os.path.sep
                 the_path += the_dt.strftime('%m') + os.path.sep
                 the_path += the_dt.strftime('%d') + os.path.sep
-                the_path = photo_home + the_path
+                the_path = os.path.join(photo_home, the_path)
                 the_target = the_path + name
                 if not os.path.exists(the_path):
                     os.makedirs(the_path)
@@ -37,11 +37,11 @@ def import_these(the_folder):
 
 if not os.path.exists(photo_home):
     os.makedirs(photo_home)
-    log_file = open(os.path.join(photo_home, log_fname), "w+")
-    message('photo-impoter started. Did not exist, created: ' + photo_home)
+    log_file_node = open(os.path.join(photo_home, log_fname), "w+")
+    message('photo-importer-cli started. Did not exist, created: ' + photo_home)
 else:
-    log_file = open(os.path.join(photo_home, log_fname), "w+")
-    message('photo-impoter started.')
+    log_file_node = open(os.path.join(photo_home, log_fname), "w+")
+    message('photo-importer-cli started.')
 
 if len(sys.argv) < 2:
     import_these(os.getcwd())
@@ -52,5 +52,5 @@ else:
         else:
             message('Not a folder, skipping: ' + arg)
 
-message('photo-importer complete.')
-log_file.close()
+message('photo-importer-cli complete.')
+log_file_node.close()
