@@ -2,12 +2,10 @@
 """
 This utility copies photos from a given folder to your home archive.
 """
-import shutil, sys, os, datetime
-the_target = os.path.join(os.path.expanduser('~'), 'Photos-testing')
-the_now = datetime.datetime.now()
-the_base_name_ext = os.path.basename(sys.argv[0])
-the_base_name = os.path.splitext(the_base_name_ext)[0]
-log_fname = the_base_name + '-' + the_now.strftime('%Y-%m-%d-%H-%M-%S') + '.txt'
+import shutil
+import sys
+import os
+import datetime
 
 def message(the_str):
     global log_file_node
@@ -36,24 +34,31 @@ def import_from_to(the_target, the_source):
             else:
                 message('Not a JPEG file, skipping: %s' % root + os.path.sep + name)
 
-if not os.path.exists(the_target):
-    os.makedirs(the_target)
-    log_file_node = open(os.path.join(the_target, log_fname), "w+")
-    message(the_base_name_ext + ' started: ' + the_now.strftime('%Y-%m-%d at %H:%M:%S'))
-    message('Did not exist, created: ' + the_target)
-else:
-    log_file_node = open(os.path.join(the_target, log_fname), "w+")
-    message(the_base_name_ext + ' started: ' + the_now.strftime('%Y-%m-%d at %H:%M:%S'))
+if __name__ == '__main__':
+    the_target = os.path.join(os.path.expanduser('~'), 'Photos-testing')
+    the_now = datetime.datetime.now()
+    the_base_name_ext = os.path.basename(sys.argv[0])
+    the_base_name = os.path.splitext(the_base_name_ext)[0]
+    log_fname = the_base_name + '-' + the_now.strftime('%Y-%m-%d-%H-%M-%S') + '.txt'
 
-if len(sys.argv) < 2:
-    import_from_to(the_target, os.getcwd())
-else:
-    for arg in sys.argv[1:]:
-        if os.path.isdir(arg) == True:
-            import_from_to(the_target, arg)
-        else:
-            message('Not a folder, skipping: ' + arg)
+    if not os.path.exists(the_target):
+        os.makedirs(the_target)
+        log_file_node = open(os.path.join(the_target, log_fname), "w+")
+        message(the_base_name_ext + ' started: ' + the_now.strftime('%Y-%m-%d at %H:%M:%S'))
+        message('Did not exist, created: ' + the_target)
+    else:
+        log_file_node = open(os.path.join(the_target, log_fname), "w+")
+        message(the_base_name_ext + ' started: ' + the_now.strftime('%Y-%m-%d at %H:%M:%S'))
 
-the_now = datetime.datetime.now()
-message(the_base_name_ext + ' completed: ' + the_now.strftime('%Y-%m-%d at %H:%M:%S'))
-log_file_node.close()
+    if len(sys.argv) < 2:
+        import_from_to(the_target, os.getcwd())
+    else:
+        for arg in sys.argv[1:]:
+            if os.path.isdir(arg) == True:
+                import_from_to(the_target, arg)
+            else:
+                message('Not a folder, skipping: ' + arg)
+
+    the_now = datetime.datetime.now()
+    message(the_base_name_ext + ' completed: ' + the_now.strftime('%Y-%m-%d at %H:%M:%S'))
+    log_file_node.close()
