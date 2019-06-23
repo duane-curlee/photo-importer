@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import filedialog
-import os, shutil, datetime, tempfile
+import sys, os, shutil, datetime, tempfile
 
 photo_target = os.path.expanduser('~') + os.path.sep + 'Photos-testing'
 photo_source = os.getcwd()
@@ -8,7 +8,9 @@ photo_source = os.getcwd()
 def import_these():
     global photo_source, photo_target
     the_now = datetime.datetime.now()
-    log_file_name = 'log-' + the_now.strftime('%Y-%m-%d-%H-%M-%S') + '.txt'
+    the_base_name_ext = os.path.basename(sys.argv[0])
+    the_base_name = os.path.splitext(the_base_name_ext)[0]
+    log_file_name = the_base_name + '-' + the_now.strftime('%Y-%m-%d-%H-%M-%S') + '.txt'
     log_file_path = os.path.join(tempfile.gettempdir(), log_file_name)
     log_file_node = open(log_file_path, "w+")
 
@@ -18,9 +20,9 @@ def import_these():
 
     if not os.path.exists(photo_target):
         os.makedirs(photo_target)
-        message('photo-impoter started. Did not exist, created: ' + photo_target)
-    else:
-        message('photo-impoter started.')
+        message('Did not exist, created: ' + photo_target)
+
+    message(the_base_name_ext + ' started: ' + the_now.strftime('%Y-%m-%d at %H:%M:%S'))
 
     for root, dirs, files in os.walk(photo_source):
         message('Checking folder: ' + os.path.normpath(root) + os.path.sep)
@@ -41,11 +43,12 @@ def import_these():
                     message('Copying %s to: %s' % (name, the_target))
                     shutil.copy2(the_source, the_path)
             else:
-                message('Not a JPEG file, skipping: %s' % name)
+                message('Not copying, not a JPEG file: %s' % name)
 
-    message('photo-importer complete.')
+    message(the_base_name_ext + ' finished: ' + the_now.strftime('%Y-%m-%d at %H:%M:%S'))
     log_file_node.close()
     shutil.copy2(log_file_path, os.path.join(photo_target, log_file_name))
+
     if os.path.isfile(log_file_path):
         os.remove(log_file_path)
 
@@ -70,7 +73,7 @@ def choose_target():
         lbl_target.config(text=os.path.normpath(photo_target))
 
 root = tk.Tk()
-root.title('Photo Importer version 0.2')
+root.title('Photo Importer version 0.3')
 root.geometry("800x600")
 root.minsize(800, 600)
 
